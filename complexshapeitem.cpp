@@ -2,67 +2,77 @@
 #include <QPainter>
 #include <QSettings>
 #include <QDebug>
-ComplexShapeItem::ComplexShapeItem(QGraphicsScene *scene,QGraphicsItem *parent):BaseItem(scene,parent)
+ComplexShapeItem::ComplexShapeItem(SegmentType type, QGraphicsScene *scene,QGraphicsItem *parent):BaseItem(scene,parent)
 {
     this->setDrawBoundingRect(false);
+    mType = type;
 }
 void ComplexShapeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
     QPainterPath path;
-    //path.moveTo(mHandles.at(10)->pos());
-    //BUG 02/08/2020 is the segment is not even, crash
-    for(int i=0 ; i < mHandles.size() ; i++) {
-        if(i == 0) {
-            path.moveTo(mHandles.at(0)->pos());
-        } else {
-            //check segment type
-            SegmentType type = SEGEMENT_LINE;
-            if(type == SEGEMENT_LINE)
-            {
-                QLineF line1(mHandles.at(i-1)->pos(),mHandles.at(i)->pos());
-                painter->drawLine(line1);
-            }
-            else
-            {
-                if(mHandles.size() > i+2)
+    path.setFillRule(Qt::OddEvenFill);
+
+    painter->save();
+    painter->setBrush(QBrush(QColor(5,125,230, 160)));
+    painter->setPen(QPen(QColor(0, 0, 0), 1.0, Qt::DashLine));
+
+    //check segment type
+    if(mType == SEGEMENT_LINE)
+    {
+        QPolygonF myPolygon;
+        for(int i=0 ; i < mHandles.size() ; i++)
+            myPolygon.append(mHandles.at(i)->pos());
+
+        path.addPolygon(myPolygon);
+    }
+    else
+    {
+        //path.moveTo(mHandles.at(10)->pos());
+        //BUG 02/08/2020 is the segment is not even, crash
+        for(int i=0 ; i < mHandles.size() ; i++) {
+            if(i == 0) {
+                path.moveTo(mHandles.at(0)->pos());
+            } else {
+
+                 if(mHandles.size() > i+2)
+                 {
+                        //TODO: Check segment type.
+                        //Create a cubic.
+                        //path.quadTo();
+                        QLineF line1(path.currentPosition(),mHandles.at(i)->pos());
+                        QLineF line2(mHandles.at(i+1)->pos(),mHandles.at(i+2)->pos());
+                        path.cubicTo(mHandles.at(i)->pos(),mHandles.at(i+1)->pos(),mHandles.at(i+2)->pos());
+                        if(this->isSelected()) {
+                            //Draw the handle lines.
+                            painter->drawLine(line1);
+                            painter->drawLine(line2);
+                        }
+                        //qDebug()<<path.elementCount();
+                        //Skip used points.
+                        i = i+2;
+                }
+                else
                 {
-                    //TODO: Check segment type.
-                    //Create a cubic.
-                    //path.quadTo();
                     QLineF line1(path.currentPosition(),mHandles.at(i)->pos());
-                    QLineF line2(mHandles.at(i+1)->pos(),mHandles.at(i+2)->pos());
-                    path.cubicTo(mHandles.at(i)->pos(),mHandles.at(i+1)->pos(),mHandles.at(i+2)->pos());
+                    QLineF line2(mHandles.at(i)->pos(),mHandles.at(0)->pos());
+                    path.cubicTo(mHandles.at(i-1)->pos(),mHandles.at(0)->pos(),mHandles.at(i)->pos());
                     if(this->isSelected()) {
                         //Draw the handle lines.
                         painter->drawLine(line1);
                         painter->drawLine(line2);
                     }
-                    //qDebug()<<path.elementCount();
-                    //Skip used points.
-                    i = i+2;
-                }
-                else
-                {
-                    QLineF line1(path.currentPosition(),mHandles.at(i)->pos());
-                    path.cubicTo(mHandles.at(i-2)->pos(),mHandles.at(i-1)->pos(),mHandles.at(i)->pos());
-                    if(this->isSelected()) {
-                        //Draw the handle lines.
-                        painter->drawLine(line1);
-                    }
-
-
                 }
             }
-
-
         }
-
     }
 
     painter->drawPath(path);
+
+    painter->restore();
     BaseItem::paint(painter,option,widget);
 }
 // Replace this with add segment.
-void ComplexShapeItem::addPoint(QPointF point, SegmentType type) {
+void ComplexShapeItem::addPoint(QPointF point) {
     QSettings settings;
     int size = settings.value("drawing/hanleSize",10).toInt();
     mHandles<<new Handle(point,size,Handle::HANDLE_SHAPE_CIRCLE,Handle::HANDLE_TYPE_CTRL);

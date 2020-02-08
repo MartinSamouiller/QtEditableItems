@@ -7,17 +7,18 @@ class ComplexShapeItem : public BaseItem
 public:
     enum SegmentType {SEGEMENT_LINE,SEGEMENT_CURVE};
     struct Segment{SegmentType type;Handle *handles;};
-    ComplexShapeItem(QGraphicsScene *scene, QGraphicsItem *parent=0);
+    ComplexShapeItem(SegmentType type, QGraphicsScene *scene, QGraphicsItem *parent=0);
     QRectF boundingRect() const;
     bool isClose() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void addPoint(QPointF point,SegmentType type);
+    void addPoint(QPointF point);
 private:
     void recalculateRect();
     QList<Handle *> mShapeHandles;
     QList<Segment *> mSegments;
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    SegmentType mType;
 };
 
 #endif // COMPLEXSHAPEITEM_H

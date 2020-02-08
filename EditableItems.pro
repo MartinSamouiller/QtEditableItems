@@ -13,6 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    basicannotationitem.cpp \
         mainwindow.cpp \
     baseitem.cpp \
     editorscene.cpp \
@@ -22,6 +23,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     baseitem.h \
+    basicannotationitem.h \
     editorscene.h \
     basicshapeitem.h \
     handle.h \

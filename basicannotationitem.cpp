@@ -3,7 +3,7 @@
 #include <QGraphicsScene>
 #include "handle.h"
 
-BasicAnnotationItem::BasicAnnotationItem(qreal x, qreal y, AnnotationType type,QGraphicsScene *scene, QGraphicsItem *parent = 0)
+BasicAnnotationItem::BasicAnnotationItem(qreal x, qreal y, AnnotationType type,QGraphicsScene *scene, QGraphicsItem *parent) : BaseItem(scene,parent)
 {
     //TODO : change size base
     mRect.setRect(x,y,20,20);

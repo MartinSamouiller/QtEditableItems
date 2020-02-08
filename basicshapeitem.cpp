@@ -26,6 +26,8 @@ void BasicShapesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
     //Enable antialiasing.
     painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->save();
+
     painter->setBrush(QBrush(QColor(5,125,230, 50)));
     painter->setPen(QPen(QColor(0, 0, 0), 1.0, Qt::SolidLine));
 
@@ -45,6 +47,10 @@ void BasicShapesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     default:
         break;
     }
+
+
+
+    painter->restore();
 
     BaseItem::paint(painter,option,widget);
 
