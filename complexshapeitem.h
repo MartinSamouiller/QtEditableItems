@@ -9,6 +9,7 @@ public:
     struct Segment{SegmentType type;Handle *handles;};
     ComplexShapeItem(QGraphicsScene *scene, QGraphicsItem *parent=0);
     QRectF boundingRect() const;
+    bool isClose() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void addPoint(QPointF point,SegmentType type);
 private:

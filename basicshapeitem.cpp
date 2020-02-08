@@ -23,8 +23,12 @@ void BasicShapesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         mRect.setTop(bottom);
         mRect.setBottom(top);
     }
+
     //Enable antialiasing.
     painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setBrush(QBrush(QColor(5,125,230, 50)));
+    painter->setPen(QPen(QColor(0, 0, 0), 1.0, Qt::SolidLine));
+
     switch (mType) {
     case ITEM_RECTANGLE:
         painter->drawRect(this->mRect);
@@ -36,13 +40,14 @@ void BasicShapesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         painter->drawLine(this->mRect.topLeft(),this->mRect.bottomRight());
         break;
     case ITEM_PIXMAP:
-        //painter->drawPixmap(this->mRect.topLeft(),this->mPixmap,this->mRect);
         painter->drawPixmap(this->mRect.toRect(),this->mPixmap);
         break;
     default:
         break;
     }
+
     BaseItem::paint(painter,option,widget);
+
     scene()->update();
 }
 

@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     BasicShapesItem *item2 = new BasicShapesItem(12,12,200,200,BasicShapesItem::ITEM_ELLIPSE,scene);
     BasicShapesItem *item3 = new BasicShapesItem(12,12,200,200,BasicShapesItem::ITEM_RECTANGLE,scene);
     ComplexShapeItem *item4 = new ComplexShapeItem(scene);
+
     item4->addPoint(QPointF(0,0),ComplexShapeItem::SEGEMENT_LINE);
     item4->addPoint(QPointF(12,12),ComplexShapeItem::SEGEMENT_LINE);
     item4->addPoint(QPointF(50,50),ComplexShapeItem::SEGEMENT_LINE);
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     item4->addPoint(QPointF(200,200),ComplexShapeItem::SEGEMENT_LINE);
     item4->addPoint(QPointF(250,250),ComplexShapeItem::SEGEMENT_LINE);
     item4->addPoint(QPointF(300,300),ComplexShapeItem::SEGEMENT_LINE);
+    item4->addPoint(QPointF(0,10),ComplexShapeItem::SEGEMENT_LINE);
 
 
     item->setPos(0,100);

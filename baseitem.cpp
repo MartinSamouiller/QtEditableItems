@@ -79,7 +79,6 @@ void BaseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
                 painter->save();
                 QPen pen(Qt::green);
                 painter->setPen(pen);
-                //painter->setPen(QPen(Qt::black));
                 painter->setBackground(QBrush(Qt::green));
                 painter->drawRect(handle->boundingRect());
                 painter->restore();
